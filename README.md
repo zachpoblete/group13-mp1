@@ -2,7 +2,7 @@
 
 👋 Hello groupmates! Welcome to our GitHub repository for Machine Problem 1.
 
-## 💻 How to contribute
+## 🛠️ How to contribute
 
 1. Watch [this video (3 minutes)](https://youtu.be/P8z4MEGcxh0) on how to install and setup [GitHub Desktop](https://desktop.github.com/download/).
 1. Send your GitHub email to the gc so that I can add you as a collaborator to the repository. (Once I add you, you will receive an invitation email.)
