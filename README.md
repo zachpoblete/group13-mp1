@@ -10,6 +10,10 @@
 1. Watch [this video (3 minutes)](https://youtu.be/cQgn3_w27_8) on how to pull changes others have made and push changes you've made to the repository.
 1. If you run into any issues (like a merge conflict), message the gc!
 
+## 📌 Reminders
+
+- `.exe` files you create will not be uploaded to the remote repository (this page) because of the [.gitignore file](.gitignore); you will have to rebuild any `.exe` file when changes to its `.c` file have been made.
+
 ## 📖 Terminology
 **Repository**: A repository is a storage location (local or remote) that contains a project's files, history, and version control metadata. The page you're looking at right now is the remote repository for Machine Problem 1.
 
