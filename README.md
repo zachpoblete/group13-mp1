@@ -13,6 +13,7 @@
 ## 📌 Reminders
 
 - `.exe` files you create will not be uploaded to the remote repository (this page) because of the [.gitignore file](.gitignore); you will have to rebuild any `.exe` file when changes to its `.c` file have been made.
+- It's a good practice to pull any changes made to the remote repository before you push your own changes.
 
 ## 📖 Terminology
 **Repository**: A repository is a storage location (local or remote) that contains a project's files, history, and version control metadata. The page you're looking at right now is the remote repository for Machine Problem 1.
