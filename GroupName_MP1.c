@@ -1,8 +1,3 @@
-// - To run this file, press the Run button which may be at the top or bottom of
-//   the screen. This creates the GroupName_MP1.exe file and runs it. (Output is displayed in the Console.)
-// - Files are automatically saved. (File version history is at the bottom right.)
-// - If you need help using Replit, just ask sa gc!
-
 #include <stdio.h>
 
 // void can be replaced if there's a return value.
@@ -19,27 +14,27 @@ int main() {
 }
 
 void UserInput() {
-    
+
 }
 
-// Assignee: 
+// Assignee:
 void SystemOfODEs() {
-    
+
 }
 
-// Assignee: 
+// Assignee:
 void Differentation() {
-    
+
 }
 
-// Assignee: 
+// Assignee:
 void Integration() {
-    
+
 }
 
 // I'm putting RootFinding() in its own file, RootFinding.c
 // Testing RootFinding.c and this current file separately will lessen the chance of bugs.
-// See test_RootFinding.c for how to test RootFinding.c
+// Run test_RootFinding.c to test RootFinding.c
 
 // Assignee: Raoul
 #include "RootFinding.c"
