@@ -31,7 +31,7 @@ void RootFinding() {
             printf("%d\t\t %.6f\t %.6e\t %.6e\n", iter, x, fx, fprime_x);
 
             if (fabs(fprime_x) < tolerance) {
-                printf("Derivative near zero, cannot proceed.\n");
+                printf("Derivative near zero, cannot proceed with the current method. Please try again!\n");
                 return -1;
             }
             x -= fx / fprime_x;
@@ -48,7 +48,7 @@ void RootFinding() {
         double fb = y_prime(b, P, L, d, E, I);
 
         if (fa * fb > 0) {
-            printf("Function does not change sign in the interval [%.6f, %.6f].\n", a, b);
+            printf("Function does not change sign in the interval [%.6f, %.6f]. Please try again!\n", a, b);
             printf("y'(a) = %.6e, y'(b) = %.6e\n", fa, fb);
             return -1;
         }
@@ -103,7 +103,7 @@ void RootFinding() {
     printf("\nMaximum deflection at the free end (in meters): %.6f\n", delta_free_end);
 
     int choice;
-    printf("\nChoose a method:\n1. Newton-Raphson (three guesses)\n2. Regula Falsi\nEnter your choice: ");
+    printf("\nChoose a method:\n1. Newton-Raphson \n2. Regula Falsi\nEnter your choice: ");
     scanf("%d", &choice);
 
     double x_max;
