@@ -2,7 +2,7 @@
 #include <stdio.h>
 #define tolerance 1e-10
 
-void calculate_deflection() {
+void RootFinding() {
     double y(double x, double P, double L, double d, double E, double I) {
         return (P * (L - d)) / (4 * E * I) * (-pow(x, 2) + (1.0 / d) * pow(x, 3));
     }
