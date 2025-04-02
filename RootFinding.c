@@ -134,8 +134,3 @@ void RootFinding() {
         printf("Invalid choice.\n");
     }
 }
-
-int main() {
-    calculate_deflection();
-    return 0;
-}
