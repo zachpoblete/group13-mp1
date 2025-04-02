@@ -84,7 +84,6 @@ void RootFinding() {
 
     double P, L, d, E_GPa, I_mm4;
 
-    // Input parameters
     printf("Enter the load P (in Newtons): ");
     scanf("%lf", &P);
     printf("Enter the length L (in meters): ");
