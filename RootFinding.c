@@ -22,7 +22,7 @@ void RootFinding() {
 
         printf("\nNewton-Raphson Method with initial guess x0 = %.6f:\n", x0);
         printf("Iteration\t x\t\t y'(x)\t\t y''(x)\n");
-        printf("--------------------------------------------------------------\n");
+        printf("----------------------------------------------------------------\n");
 
         do {
             fx = y_prime(x, P, L, d, E, I);
@@ -38,7 +38,7 @@ void RootFinding() {
             iter++;
         } while (fabs(fx) > tolerance && iter < 100);
 
-        printf("--------------------------------------------------------------\n");
+        printf("----------------------------------------------------------------\n");
         printf("Converged to x = %.6f after %d iterations.\n", x, iter);
         return x;
     }
