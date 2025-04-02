@@ -58,7 +58,7 @@ void RootFinding() {
 
         printf("\nRegula Falsi Method in interval [%.6f, %.6f]:\n", a, b);
         printf("\nIteration\t a\t\t b\t\t c\t\t y'(c)\n");
-        printf("--------------------------------------------------------------\n");
+        printf("-------------------------------------------------------------------------------\n");
 
         do {
             c = a - (fa * (b - a)) / (fb - fa);
@@ -77,7 +77,7 @@ void RootFinding() {
             iter++;
         } while (fabs(b - a) > tolerance && iter < 100);
 
-        printf("--------------------------------------------------------------\n");
+        printf("-------------------------------------------------------------------------------\n");
         printf("Converged to x = %.6f after %d iterations.\n", c, iter);
         return c;
     }
@@ -123,7 +123,7 @@ void RootFinding() {
 
         x_max = regula_falsi(P, L, d, E, I, a, b);
 
-        if (x_max == x_max) {
+        if (x_max != -1) {
             printf("\nLocation of maximum deflection within [0, d] (in meters): %.6f\n", x_max);
             printf("Maximum deflection: %.6f\n", y(x_max, P, L, d, E, I));
         } else {
