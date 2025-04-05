@@ -61,7 +61,7 @@ void RootFinding() {
         printf("-------------------------------------------------------------------------------\n");
 
         do {
-            c = a - (fa * (b - a)) / (fb - fa);
+            c = (a * fb - b * fa)/ (fb - fa);
             double fc = y_prime(c, P, L, d, E, I);
 
             printf("%d\t\t %.6f\t %.6f\t %.6f\t %.6e\n", iter, a, b, c, fc);
