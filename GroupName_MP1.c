@@ -9,8 +9,8 @@ void Integration();
 void RootFinding();
 
 int main() {
-    printf("Hello groupmates!");
-    return 0;
+    printf("Hello groupmates!\n");
+    SystemOfODEs();
 }
 
 void UserInput() {
@@ -28,35 +28,33 @@ void SystemOfODEs() {
     double h1, h2, h3 ,h4;
     double i1, i2, i3, i4;
 
-    FILE *fp = fopen("rk4.csv", "w");
-    if (!fp) {
-        perror("Error opening file");
-        return;
-    }
-
-    fprintf(fp, "x (m), Deflection y (m), Slope θ (rad), Moment M (Nm), Shear V (N)\n");
-
     printf("Input the height of the column (in m): ");
-    scanf("%lf", &P);
-    printf("Input the concentrated load P (in N): ");
     scanf("%lf", &L);
+    printf("Input the concentrated load P (in N): ");
+    scanf("%lf", &P);
     printf("Input the modulus of elasticity (in GPa): ");
     scanf("%lf", &E);
-    printf("Input the moment of inertia (in mm4): ");
+    printf("Input the moment of inertia (in mm^4): ");
     scanf("%lf", &I);
     printf("Input the step size: ");
     scanf("%lf", &h);
 
     do{
-        system("cls");
-        printf("Choose a method:\n1. Euler's \n2. 4th Order Runge-Kutta \nEnter your choice: ");
+        printf("\nChoose a method:\n1. Euler's \n2. 4th Order Runge-Kutta \n\nEnter your choice: ");
         scanf("%lf", &choice);
     } while(choice != 1 && choice !=2);
 
-    z1 = 0, z2 = 0, z3 = (P/1000.0)*L, z4 = -(P/1000.0), E_I = E*I*1e-6;
+    FILE *fPtr1 = fopen("euler.csv", "w");
+    FILE *fPtr2 = fopen("rk4.csv", "w");
+    fprintf(fPtr1, "x (m), Deflection y (m), Slope (rad), Moment (Nm), Shear (N)\n");
+    fprintf(fPtr2, "x (m), Deflection y (m), Slope (rad), Moment (Nm), Shear (N)\n");
+
+    z1 = 0, z2 = 0, z3 = P*L, z4 = -P, E_I = E*I*1e-3;
 
     if(choice == 1){
       for (i=0; i <= L; i+=h){
+        fprintf(fPtr1, "%.3e, %.3e, %.3e, %.3e, %.3e\n", i, z1, z2, z3, z4);
+
           z1 = z1 + h*z2;
           z2 = z2 + h*z3/E_I;
           z3 = z3 + h*z4;
@@ -65,8 +63,8 @@ void SystemOfODEs() {
 
     else if(choice == 2){
         for (i=0; i <= L; i+=h){
-         fprintf(fp, "%.3e, %.3e, %.3e, %.3e, %.3e\n", i, z1, z2, z3, z4);
-
+        fprintf(fPtr2, "%.3e, %.3e, %.3e, %.3e, %.3e\n", i, z1, z2, z3, z4);
+            
          f1 = h*z2;
          g1 = h*z3/(E_I);
          h1 = h*z4;
@@ -94,8 +92,18 @@ void SystemOfODEs() {
 
     printf("\ny = %lf", z1);
     printf("\ntheta = %lf", z2);
-    printf("\nM = %lf", z3+h);
-    printf("\nV = %lf", z4*1000);
+    printf("\nM = %lf", z3+h*P);
+    printf("\nV = %lf", z4);
+
+    if(choice == 1){
+        fclose(fPtr1);
+        printf("\nThe Euler's method results are successfully saved to euler.csv!\n");
+    }
+
+    else if(choice == 2){
+        fclose(fPtr2);
+        printf("\nThe 4th Order Runge-Kutta method results are successfully saved to rk4.csv!\n");
+    }    
 }
 
 // Assignee:
