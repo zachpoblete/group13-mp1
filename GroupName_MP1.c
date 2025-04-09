@@ -229,7 +229,7 @@ void Integration(double L, double P, double E, double I) {
 
     double exactArea = 0.5 * maxP * Delta(L, maxP, E, I);
     printf("\nCalculated Area: %lf\n", area);
-    printf("Exact Area: %lf", exactArea);
+    printf("Exact Area: %lf\n", exactArea);
 }
 
 //== ===========================================================================
@@ -245,19 +245,17 @@ double Delta(double L, double P, double E, double I) {
 //= ============================================================================
 
 void RootFinding(double L, double P, double E, double I) {
+    printf("\nROOT FINDING:\n");
     double d = 0;
     do {
-        printf("\nEnter the pin-support distance, d (m): ");
+        printf("Enter the pin-support distance, d (m): ");
         scanf("%lf", &d);
 
-        if (d > 0) {
+        if (0 < d && d < L) {
             break;
         }
-        printf("\nh must be positive. Enter again.\n");
+        printf("\nd must be between 0 and L. Enter again.\n");
     } while(1);
-
-    printf("Enter the distance d (in meters): ");
-    scanf("%lf", &d);
 
     double delta_free_end = (P * (L - d)) / (E * I) * (-pow(L, 2) / 4.0 + pow(L, 3) / (4.0 * d) - (pow(L - d, 2) * (3 * L - d) / (12.0 * d)));
     printf("\nMaximum deflection at the free end (in meters): %.6f\n", delta_free_end);
