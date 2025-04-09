@@ -27,13 +27,13 @@ void UserInput() {
     printf("USER INPUT:\n");
     double L, P, E, I;
     do {
-        printf("Input the column height L (in m): ");
+        printf("Enter the column height, L (in m): ");
         scanf("%lf", &L);
-        printf("Input the concentrated load P (in N): ");
+        printf("Enter the concentrated load, P (in N): ");
         scanf("%lf", &P);
-        printf("Input the modulus of elasticity E (in GPa): ");
+        printf("Enter the modulus of elasticity, E (in GPa): ");
         scanf("%lf", &E);
-        printf("Input the moment of inertia I (in mm^4): ");
+        printf("Enter the moment of inertia, I (in mm^4): ");
         scanf("%lf", &I);
 
         if (L > 0 && P > 0 && E > 0 && I > 0) {
@@ -65,7 +65,7 @@ void SystemOfODEs(double L, double P, double E, double I) {
 
     double h = 0;
     do {
-        printf("Input the step size h: ");
+        printf("Enter the step size, h: ");
         scanf("%lf", &h);
 
         if (h > 0) {
@@ -154,7 +154,7 @@ void Integration(double L, double P, double E, double I) {
 
     int n = 0;
     do {
-        printf("Number of intervals, n: ");
+        printf("Enter the number of intervals, n: ");
         scanf("%d", &n);
 
         if (n > 0) {
