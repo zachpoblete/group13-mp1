@@ -13,7 +13,8 @@ int main() {
 }
 
 void UserInput() {
-    double L, P, E, I, h;
+    // ! TO DO: Input validation
+    double L, P, E, I;
     printf("Input the column height L (in m): ");
     scanf("%lf", &L);
     printf("Input the concentrated load P (in N): ");
@@ -22,23 +23,23 @@ void UserInput() {
     scanf("%lf", &E);
     printf("Input the moment of inertia I (in mm⁴): ");
     scanf("%lf", &I);
-    printf("Input the step size h: ");
-    scanf("%lf", &h);
-
-    SystemOfODEs(L, P, E, I, h);
+    SystemOfODEs(L, P, E, I);
 }
 
 // Assignee:
-void SystemOfODEs(double L, double P, double E, double I, double h) {
+void SystemOfODEs(double L, double P, double E, double I) {
     double i, choice;
-    double E_I;
+    double h, E_I;
     double z1, z2, z3, z4;
     double f1, f2, f3, f4;
     double g1, g2, g3, g4;
     double h1, h2, h3 ,h4;
     double i1, i2, i3, i4;
 
-    do{
+    printf("Input the step size h: ");
+    scanf("%lf", &h);
+
+   do{
         printf("\nChoose a method:\n1. Euler's \n2. 4th Order Runge-Kutta \n\nEnter your choice: ");
         scanf("%lf", &choice);
     } while(choice != 1 && choice !=2);
