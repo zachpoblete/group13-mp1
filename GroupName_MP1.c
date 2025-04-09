@@ -18,12 +18,14 @@ double newton_raphson(double P, double L, double d, double E, double I, double x
 double regula_falsi(double P, double L, double d, double E, double I, double a, double b);
 
 int main() {
-    // Uncomment for quick testing (don't have to manually input values):
+    // Uncomment the code below for quick testing (so that you don't have to manually input values):
     // double L = 5;
     // double P = 1000;
-    // double E = 200;
-    // double I = 50000000;
-    // Integration(L, P, E, I);
+    // double E_GPa = 200;
+    // double I_mm4 = 50000000;
+    // double E = E_GPa * 1e9;
+    // double I = I_mm4 * 1e-12;
+    // RootFinding(L, P, E, I);
 
     UserInput();
     return 0;
