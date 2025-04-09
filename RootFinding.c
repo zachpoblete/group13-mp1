@@ -84,16 +84,45 @@ void RootFinding() {
 
     double P, L, d, E_GPa, I_mm4;
 
-    printf("Enter the load P (in Newtons): ");
-    scanf("%lf", &P);
-    printf("Enter the length L (in meters): ");
-    scanf("%lf", &L);
-    printf("Enter the distance d (in meters): ");
-    scanf("%lf", &d);
-    printf("Enter the modulus of elasticity E (in GPa): ");
-    scanf("%lf", &E_GPa);
-    printf("Enter the moment of inertia I (in mm^4): ");
-    scanf("%lf", &I_mm4);
+    do {
+        printf("Enter the load P (in Newtons): ");
+        scanf("%lf", &P);
+        if (P <= 0) {
+            printf("Invalid input. Please enter a positive number.\n");
+        }
+    } while (P <= 0);
+
+    do {
+        printf("Enter the length L (in meters): ");
+        scanf("%lf", &L);
+        if (L <= 0) {
+            printf("Invalid input. Please enter a positive number.\n");
+        }
+    } while (L <= 0);
+
+    do {
+        printf("Enter the distance d (in meters): ");
+        scanf("%lf", &d);
+        if (d <= 0) {
+            printf("Invalid input. Please enter a positive number.\n");
+        }
+    } while (d <= 0);
+
+    do {
+        printf("Enter the modulus of elasticity E (in GPa): ");
+        scanf("%lf", &E_GPa);
+        if (E_GPa <= 0) {
+            printf("Invalid input. Please enter a positive number.\n");
+        }
+    } while (E_GPa <= 0);
+
+    do {
+        printf("Enter the moment of inertia I (in mm^4): ");
+        scanf("%lf", &I_mm4);
+        if (I_mm4 <= 0) {
+            printf("Invalid input. Please enter a positive number.\n");
+        }
+    } while (I_mm4 <= 0);
 
     double E = E_GPa * 1e9;
     double I = I_mm4 * 1e-12;
@@ -102,8 +131,13 @@ void RootFinding() {
     printf("\nMaximum deflection at the free end (in meters): %.6f\n", delta_free_end);
 
     int choice;
-    printf("\nChoose a method:\n1. Newton-Raphson \n2. Regula Falsi\nEnter your choice: ");
-    scanf("%d", &choice);
+    do {
+        printf("\nChoose a method:\n1. Newton-Raphson \n2. Regula Falsi\nEnter your choice: ");
+        scanf("%d", &choice);
+        if (choice != 1 && choice != 2) {
+            printf("Invalid choice. Please enter 1 or 2.\n");
+        }
+    } while (choice != 1 && choice != 2);
 
     double x_max;
     if (choice == 1) {
@@ -129,7 +163,5 @@ void RootFinding() {
         } else {
             printf("\nCalculation failed.\n");
         }
-    } else {
-        printf("Invalid choice.\n");
     }
 }
