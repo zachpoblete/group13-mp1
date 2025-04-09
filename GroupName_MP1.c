@@ -4,16 +4,27 @@
 // void can be replaced if there's a return value.
 // Add parameters to the functions as needed:
 void UserInput();
-void SystemOfODEs();
-void Differentation();
-void Integration();
+void SystemOfODEs(double L, double P, double E, double I);
+void Differentation(double L, double P, double E, double I);
+void Integration(double L, double P, double E, double I);
 void RootFinding();
 
+double Delta(double L, double P, double E, double I);
+
 int main() {
+    // Uncomment for quick testing (don't have to manually input values):
+    // double L = 5;
+    // double P = 1000;
+    // double E = 200;
+    // double I = 50000000;
+    // Integration(L, P, E, I);
+
     UserInput();
+    return 0;
 }
 
 void UserInput() {
+    printf("USER INPUT:\n");
     double L, P, E, I;
     do {
         printf("Input the column height L (in m): ");
@@ -32,9 +43,11 @@ void UserInput() {
     } while(1);
 
     SystemOfODEs(L, P, E, I);
+    Integration(L, P, E, I);
 }
 
 void SystemOfODEs(double L, double P, double E, double I) {
+    printf("\nSYSTEM OF ODES:\n");
     double h, response;
 
     do {
@@ -44,12 +57,12 @@ void SystemOfODEs(double L, double P, double E, double I) {
         if (h > 0) {
             break;
         }
-        printf("\nAll values must be positive. Enter again.\n");
+        printf("\nh must be positive. Enter again.\n");
     } while(1);
 
-    printf("\nChoose a method:\n");
-    printf("(1) Euler's\n");
-    printf("(2) 4th Order Runge-Kutta\n");
+    printf("\nChoose:\n");
+    printf("(1) Euler Method\n");
+    printf("(2) RK4\n\n");
     do {
         printf("Respond 1 or 2: ");
         scanf("%lf", &response);
@@ -72,8 +85,8 @@ void SystemOfODEs(double L, double P, double E, double I) {
 
     int N = round((double) L/h);
     int n = 0;
-    if (response == 1){
-        for (n = 0; n < N; n++){
+    if (response == 1) {  // Euler Method
+        for (n = 0; n < N; n++) {
             x = n * h;
             fprintf(fPtr, "%d,%.4e,%.4e,%.4e,%.4e,%.4e\n", n, x, y, theta, M, V);
 
@@ -82,9 +95,8 @@ void SystemOfODEs(double L, double P, double E, double I) {
             M = M + h*V;
         }
         fprintf(fPtr, "%d,%.4e,%.4e,%.4e,%.4e,%.4e\n", n, x, y, theta, M, V);
-    }
-    else if (response == 2){
-        for (n = 0; n < N; n++){
+    } else {  // RK4
+        for (n = 0; n < N; n++) {
             x = n * h;
             fprintf(fPtr, "%d,%.4e,%.4e,%.4e,%.4e,%.4e\n", n, x, y, theta, M, V);
 
@@ -119,12 +131,79 @@ void SystemOfODEs(double L, double P, double E, double I) {
     printf("\nThe results are successfully saved to data.csv!\n");
 }
 
-void Differentation() {
+void Differentation(double L, double P, double E, double I) {
 
 }
 
-void Integration() {
+void Integration(double L, double P, double E, double I) {
+    printf("\nNUMERICAL INTEGRATION:\n");
+    int response = 0;
+    do {
+        printf("Choose:\n");
+        printf("(1)  Trapezoidal Rule\n");
+        printf("(2)  Simpson's Rule\n\n");
+        printf("Respond 1 or 2: ");
+        scanf("%d", &response);
 
+        if (response == 1 || response == 2) {
+            break;
+        }
+        printf("\nWrong Input. Enter again.\n");
+    } while(1);
+
+    int n = 0;
+    do {
+        printf("Number of intervals, n: ");
+        scanf("%d", &n);
+
+        if (n > 0) {
+            break;
+        }
+        printf("\nn must be positive. Enter again.\n");
+    } while (1);
+
+    double maxP = P;
+    double h = maxP/n;
+    double area = 0;
+
+    if (response == 1) {
+        double endNodesSum = Delta(L, maxP, E, I) + Delta(L, 0, E, I);
+        double innerNodesSum = 0;
+        for (int k = 1; k < n; k++) {
+            P = h*k;
+            innerNodesSum += Delta(L, P, E, I);
+        }
+
+        double endNodesTerm = h/2 * endNodesSum;
+        double innerNodesTerm = h * innerNodesSum;
+        area = endNodesTerm + innerNodesTerm;
+    } else {
+        double endNodesSum = Delta(L, maxP, E, I) + Delta(L, 0, E, I);
+        double evenNodesSum = 0;
+        double oddNodesSum = 0;
+        for (int k = 1; k < n; k++) {
+            P = h*k;
+            if (k % 2 == 0) {
+                evenNodesSum += Delta(L, P, E, I);
+            } else {
+                oddNodesSum += Delta(L, P, E, I);
+            }
+        }
+
+        double endNodesFactor = (double) h / 3;
+        double evenNodesFactor = 2 * (double) h / 3;
+        double oddNodesFactor = 4 * (double) h / 3;
+
+        double endNodesTerm = endNodesFactor * endNodesSum;
+        double evenNodesTerm = evenNodesFactor * evenNodesSum;
+        double oddNodesTerm = oddNodesFactor * oddNodesSum;
+
+        area = endNodesTerm + evenNodesTerm + oddNodesTerm;
+    }
+
+    double exactArea = 0.5 * maxP * Delta(L, maxP, E, I);
+    printf("\nCalculated Area: %lf\n", area);
+    printf("Exact Area: %lf", exactArea);
 }
 
 // I'm putting RootFinding() in its own file, RootFinding.c
@@ -135,3 +214,8 @@ void Integration() {
 
 // Before we submit, we'll replace `#include "RootFinding.c"` with the actual contents
 // of RootFinding.c because the Machine Problem needs to be submitted as one file.
+
+double Delta(double L, double P, double E, double I) {
+    double EI = E*I*1e-3;
+    return P*L*L*L / (3*EI);
+}
