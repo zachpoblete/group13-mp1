@@ -26,7 +26,6 @@ void UserInput() {
     SystemOfODEs(L, P, E, I);
 }
 
-// Assignee:
 void SystemOfODEs(double L, double P, double E, double I) {
     double i, choice;
     double h, E_I;
@@ -106,12 +105,10 @@ void SystemOfODEs(double L, double P, double E, double I) {
     }
 }
 
-// Assignee:
 void Differentation() {
 
 }
 
-// Assignee:
 void Integration() {
 
 }
@@ -120,7 +117,6 @@ void Integration() {
 // Testing RootFinding.c and this current file separately will lessen the chance of bugs.
 // Run test_RootFinding.c to test RootFinding.c
 
-// Assignee: Raoul
 #include "RootFinding.c"
 
 // Before we submit, we'll replace `#include "RootFinding.c"` with the actual contents
