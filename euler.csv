@@ -1,4 +1,4 @@
-x (m), Deflection y (m), Slope (rad), Moment (Nm), Shear (N)
+x (m),Deflection y (m),Slope (rad),Moment (Nm),Shear (N)
 0.000e+00,0.000e+00,0.000e+00,5.000e+03,-1.000e+03
 1.000e-02,0.000e+00,5.000e-06,4.990e+03,-1.000e+03
 2.000e-02,5.000e-08,9.990e-06,4.980e+03,-1.000e+03

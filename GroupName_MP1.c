@@ -45,8 +45,8 @@ void SystemOfODEs(double L, double P, double E, double I) {
 
     FILE *fPtr1 = fopen("euler.csv", "w");
     FILE *fPtr2 = fopen("rk4.csv", "w");
-    fprintf(fPtr1, "x (m), Deflection y (m), Slope (rad), Moment (Nm), Shear (N)\n");
-    fprintf(fPtr2, "x (m), Deflection y (m), Slope (rad), Moment (Nm), Shear (N)\n");
+    fprintf(fPtr2, "x (m),Deflection y (m),Slope (rad),Moment (Nm),Shear (N)\n");
+    fprintf(fPtr1, "x (m),Deflection y (m),Slope (rad),Moment (Nm),Shear (N)\n");
 
     z1 = 0, z2 = 0, z3 = P*L, z4 = -P, E_I = E*I*1e-3;
 
