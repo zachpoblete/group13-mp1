@@ -28,13 +28,7 @@ void UserInput() {
 }
 
 void SystemOfODEs(double L, double P, double E, double I) {
-    double x, choice;
-    double h, EI;
-    double y, theta, M, V;
-    double f1, f2, f3, f4;
-    double g1, g2, g3, g4;
-    double h1, h2, h3 ,h4;
-    double i1, i2, i3, i4;
+    double h, choice;
 
     printf("Input the step size h: ");
     scanf("%lf", &h);
@@ -47,7 +41,12 @@ void SystemOfODEs(double L, double P, double E, double I) {
     FILE *fPtr = fopen("data.csv", "w");
     fprintf(fPtr, "n,x (m),y (m),θ (rad),M (Nm),V (N)\n");
 
-    x = 0, y = 0, theta = 0, M = P*L, V = -P, EI = E*I*1e-3;
+    double x = 0;
+    double y = 0;
+    double theta = 0;
+    double M = P*L;
+    double V = -P;
+    double EI = E*I*1e-3;
 
     int N = round((double) L/h);
     int n = 0;
@@ -67,36 +66,34 @@ void SystemOfODEs(double L, double P, double E, double I) {
             x = n * h;
             fprintf(fPtr, "%d,%.4e,%.4e,%.4e,%.4e,%.4e\n", n, x, y, theta, M, V);
 
-            f1 = h*theta;
-            g1 = h*M/EI;
-            h1 = h*V;
+            double f1 = h * theta;
+            double g1 = h * M/EI;
+            double h1 = h * V;
 
-            f2 = h*(theta+0.5*g1);
-            g2 = h*(M+0.5*h1)/EI;
-            h2 = h*V;
+            double f2 = h * (theta + 0.5*g1);
+            double g2 = h * (M + 0.5*h1)/EI;
+            double h2 = h * V;
 
-            f3 = h*(theta+0.5*g2);
-            g3 = h*(M+0.5*h2)/EI;
-            h3 = h*V;
+            double f3 = h * (theta + 0.5*g2);
+            double g3 = h * (M + 0.5*h2)/EI;
+            double h3 = h * V;
 
-            f4 = h*(theta+g3);
-            g4 = h*(M+h3)/EI;
-            h4 = h*V;
+            double f4 = h * (theta + g3);
+            double g4 = h * (M + h3)/EI;
+            double h4 = h * V;
 
-            y = y + (f1+2*f2+2*f3+f4)/6;
-            theta = theta + (g1+2*g2+2*g3+g4)/6;
-            M = M + (h1+2*h2+2*h3+h4)/6;
+            y = y + (f1 + 2*f2 + 2*f3 + f4)/6;
+            theta = theta + (g1 + 2*g2 + 2*g3 + g4)/6;
+            M = M + (h1 + 2*h2 + 2*h3 + h4)/6;
         }
-
         fprintf(fPtr, "%d,%.4e,%.4e,%.4e,%.4e,%.4e\n", n, x, y, theta, M, V);
     }
+    fclose(fPtr);
 
     printf("\ny = %lf", y);
     printf("\ntheta = %lf", theta);
     printf("\nM = %lf", M);
     printf("\nV = %lf", V);
-
-    fclose(fPtr);
     printf("\nThe results are successfully saved to data.csv!\n");
 }
 
