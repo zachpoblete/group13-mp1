@@ -50,7 +50,7 @@ void SystemOfODEs(double L, double P, double E, double I) {
 
     if(choice == 1){
         for (i=0; i <= L; i+=h){
-            fprintf(fPtr, "%.3e,%.3e,%.3e,%.3e,%.3e\n", i, z1, z2, z3, z4);
+            fprintf(fPtr, "%.4e,%.4e,%.4e,%.4e,%.4e\n", i, z1, z2, z3, z4);
 
             z1 = z1 + h*z2;
             z2 = z2 + h*z3/E_I;
@@ -60,7 +60,7 @@ void SystemOfODEs(double L, double P, double E, double I) {
 
     else if(choice == 2){
         for (i=0; i <= L; i+=h){
-            fprintf(fPtr, "%.3e,%.3e,%.3e,%.3e,%.3e\n", i, z1, z2, z3, z4);
+            fprintf(fPtr, "%.4e,%.4e,%.4e,%.4e,%.4e\n", i, z1, z2, z3, z4);
 
             f1 = h*z2;
             g1 = h*z3/(E_I);
