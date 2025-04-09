@@ -43,16 +43,14 @@ void SystemOfODEs(double L, double P, double E, double I) {
         scanf("%lf", &choice);
     } while(choice != 1 && choice !=2);
 
-    FILE *fPtr1 = fopen("euler.csv", "w");
-    FILE *fPtr2 = fopen("rk4.csv", "w");
-    fprintf(fPtr2, "x (m),Deflection y (m),Slope (rad),Moment (Nm),Shear (N)\n");
-    fprintf(fPtr1, "x (m),Deflection y (m),Slope (rad),Moment (Nm),Shear (N)\n");
+    FILE *fPtr = fopen("data.csv", "w");
+    fprintf(fPtr, "x (m),Deflection y (m),Slope (rad),Moment (Nm),Shear (N)\n");
 
     z1 = 0, z2 = 0, z3 = P*L, z4 = -P, E_I = E*I*1e-3;
 
     if(choice == 1){
       for (i=0; i <= L; i+=h){
-        fprintf(fPtr1, "%.3e,%.3e,%.3e,%.3e,%.3e\n", i, z1, z2, z3, z4);
+        fprintf(fPtr, "%.3e,%.3e,%.3e,%.3e,%.3e\n", i, z1, z2, z3, z4);
 
           z1 = z1 + h*z2;
           z2 = z2 + h*z3/E_I;
@@ -62,7 +60,7 @@ void SystemOfODEs(double L, double P, double E, double I) {
 
     else if(choice == 2){
         for (i=0; i <= L; i+=h){
-        fprintf(fPtr2, "%.3e,%.3e,%.3e,%.3e,%.3e\n", i, z1, z2, z3, z4);
+        fprintf(fPtr, "%.3e,%.3e,%.3e,%.3e,%.3e\n", i, z1, z2, z3, z4);
 
          f1 = h*z2;
          g1 = h*z3/(E_I);
@@ -94,15 +92,8 @@ void SystemOfODEs(double L, double P, double E, double I) {
     printf("\nM = %lf", z3+h*P);
     printf("\nV = %lf", z4);
 
-    if(choice == 1){
-        fclose(fPtr1);
-        printf("\nThe Euler's method results are successfully saved to euler.csv!\n");
-    }
-
-    else if(choice == 2){
-        fclose(fPtr2);
-        printf("\nThe 4th Order Runge-Kutta method results are successfully saved to rk4.csv!\n");
-    }
+    fclose(fPtr);
+    printf("\nThe results are successfully saved to data.csv!\n");
 }
 
 void Differentation() {
