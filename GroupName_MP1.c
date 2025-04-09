@@ -103,7 +103,8 @@ void SystemOfODEs(double L, double P, double E, double I) {
 
     int N = round((double) L/h);
     int n = 0;
-    if (response == 1) {  // Euler Method
+    if (response == 1) {
+        // Euler Method:
         for (n = 0; n < N; n++) {
             x = n * h;
             fprintf(fPtr, "%d,%.4e,%.4e,%.4e,%.4e,%.4e\n", n, x, y, theta, M, V);
@@ -113,7 +114,8 @@ void SystemOfODEs(double L, double P, double E, double I) {
             M = M + h*V;
         }
         fprintf(fPtr, "%d,%.4e,%.4e,%.4e,%.4e,%.4e\n", n, x, y, theta, M, V);
-    } else {  // RK4
+    } else {
+        // RK4:
         for (n = 0; n < N; n++) {
             x = n * h;
             fprintf(fPtr, "%d,%.4e,%.4e,%.4e,%.4e,%.4e\n", n, x, y, theta, M, V);
@@ -164,8 +166,8 @@ void Differentation() {
 void Integration(double L, double P, double E, double I) {
     printf("\nNUMERICAL INTEGRATION:\n");
     printf("Choose:\n");
-    printf("(1)  Trapezoidal Rule\n");
-    printf("(2)  Simpson's Rule\n\n");
+    printf("(1)  Composite Trapezoidal Rule\n");
+    printf("(2)  Composite Simpson's Rule\n\n");
 
     int response = 0;
     do {
@@ -194,6 +196,8 @@ void Integration(double L, double P, double E, double I) {
     double area = 0;
 
     if (response == 1) {
+        // Composite Trapezoidal Rule:
+
         double endNodesSum = Delta(L, maxP, E, I) + Delta(L, 0, E, I);
         double innerNodesSum = 0;
         for (int k = 1; k < n; k++) {
@@ -205,6 +209,8 @@ void Integration(double L, double P, double E, double I) {
         double innerNodesTerm = h * innerNodesSum;
         area = endNodesTerm + innerNodesTerm;
     } else {
+        // Composite Simpson's Rule:
+
         double endNodesSum = Delta(L, maxP, E, I) + Delta(L, 0, E, I);
         double evenNodesSum = 0;
         double oddNodesSum = 0;
@@ -259,10 +265,10 @@ void RootFinding(double L, double P, double E, double I) {
         printf("\nd must be between 0 and L. Enter again.\n");
     } while(1);
 
+    int response = 0;
     printf("Choose:\n");
     printf("(1)  Newton-Raphson\n");
     printf("(2)  Regula Falsi\n\n");
-    int response = 0;
     do {
         printf("Respond 1 or 2: ");
         scanf("%d", &response);
