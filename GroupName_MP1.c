@@ -246,6 +246,7 @@ double Delta(double L, double P, double E, double I) {
 
 void RootFinding(double L, double P, double E, double I) {
     printf("\nROOT FINDING:\n");
+
     double d = 0;
     do {
         printf("Enter the pin-support distance, d (m): ");
@@ -257,15 +258,25 @@ void RootFinding(double L, double P, double E, double I) {
         printf("\nd must be between 0 and L. Enter again.\n");
     } while(1);
 
+    printf("Choose:\n");
+    printf("(1)  Newton-Raphson\n");
+    printf("(2)  Regula Falsi\n\n");
+    int response = 0;
+    do {
+        printf("Respond 1 or 2: ");
+        scanf("%d", &response);
+
+        if (response == 1 || response == 2) {
+            break;
+        }
+        printf("\nWrong Input. Enter again.\n");
+    } while(1);
+
     double delta_free_end = (P * (L - d)) / (E * I) * (-pow(L, 2) / 4.0 + pow(L, 3) / (4.0 * d) - (pow(L - d, 2) * (3 * L - d) / (12.0 * d)));
     printf("\nMaximum deflection at the free end (in meters): %.6f\n", delta_free_end);
 
-    int choice;
-    printf("\nChoose a method:\n1. Newton-Raphson \n2. Regula Falsi\nEnter your choice: ");
-    scanf("%d", &choice);
-
     double x_max;
-    if (choice == 1) {
+    if (response == 1) {
         printf("\nRunning Newton-Raphson for three initial guesses:\n");
 
         x_max = newton_raphson(P, L, d, E, I, 0.0);
@@ -276,7 +287,7 @@ void RootFinding(double L, double P, double E, double I) {
 
         x_max = newton_raphson(P, L, d, E, I, d);
         printf("Maximum deflection at x = %.6f: %.6f m\n", x_max, y(x_max, P, L, d, E, I));
-    } else if (choice == 2) {
+    } else {
         double a = d / 100.0;
         double b = d;
 
@@ -288,8 +299,6 @@ void RootFinding(double L, double P, double E, double I) {
         } else {
             printf("\nCalculation failed.\n");
         }
-    } else {
-        printf("Invalid choice.\n");
     }
 }
 
