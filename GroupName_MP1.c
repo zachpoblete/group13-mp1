@@ -86,10 +86,10 @@ void SystemOfODEs(double L, double P, double E, double I) {
         printf("Enter the step size, h (m): ");
         scanf("%lf", &h);
 
-        if (h > 0) {
+        if (0 < h && h < L) {
             break;
         }
-        printf("\nh must be positive. Enter again.\n");
+        printf("\nh must be between 0 and L. Enter again.\n");
     } while(1);
 
     FILE *fPtr = fopen("data.csv", "w");
@@ -182,10 +182,10 @@ void Integration(double L, double P, double E, double I) {
         printf("Enter the number of intervals, n: ");
         scanf("%d", &n);
 
-        if (n > 0) {
+        if (n > 0 && n % 2 == 0) {
             break;
         }
-        printf("\nn must be positive. Enter again.\n");
+        printf("\nn must be positive and even. Enter again.\n");
     } while (1);
 
     double maxP = P;
