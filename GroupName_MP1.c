@@ -9,35 +9,34 @@ void Integration();
 void RootFinding();
 
 int main() {
-    printf("Hello groupmates!\n");
-    SystemOfODEs();
+    UserInput();
 }
 
 void UserInput() {
- 
-    }
+    double L, P, E, I, h;
+    printf("Input the column height L (in m): ");
+    scanf("%lf", &L);
+    printf("Input the concentrated load P (in N): ");
+    scanf("%lf", &P);
+    printf("Input the modulus of elasticity E (in GPa): ");
+    scanf("%lf", &E);
+    printf("Input the moment of inertia I (in mm⁴): ");
+    scanf("%lf", &I);
+    printf("Input the step size h: ");
+    scanf("%lf", &h);
 
+    SystemOfODEs(L, P, E, I, h);
+}
 
 // Assignee:
-void SystemOfODEs() {
+void SystemOfODEs(double L, double P, double E, double I, double h) {
     double i, choice;
-    double h, L, P, E, I, E_I;
+    double E_I;
     double z1, z2, z3, z4;
     double f1, f2, f3, f4;
     double g1, g2, g3, g4;
     double h1, h2, h3 ,h4;
     double i1, i2, i3, i4;
-
-    printf("Input the height of the column (in m): ");
-    scanf("%lf", &L);
-    printf("Input the concentrated load P (in N): ");
-    scanf("%lf", &P);
-    printf("Input the modulus of elasticity (in GPa): ");
-    scanf("%lf", &E);
-    printf("Input the moment of inertia (in mm^4): ");
-    scanf("%lf", &I);
-    printf("Input the step size: ");
-    scanf("%lf", &h);
 
     do{
         printf("\nChoose a method:\n1. Euler's \n2. 4th Order Runge-Kutta \n\nEnter your choice: ");
@@ -64,7 +63,7 @@ void SystemOfODEs() {
     else if(choice == 2){
         for (i=0; i <= L; i+=h){
         fprintf(fPtr2, "%.3e, %.3e, %.3e, %.3e, %.3e\n", i, z1, z2, z3, z4);
-            
+
          f1 = h*z2;
          g1 = h*z3/(E_I);
          h1 = h*z4;
@@ -103,7 +102,7 @@ void SystemOfODEs() {
     else if(choice == 2){
         fclose(fPtr2);
         printf("\nThe 4th Order Runge-Kutta method results are successfully saved to rk4.csv!\n");
-    }    
+    }
 }
 
 // Assignee:
