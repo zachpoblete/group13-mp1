@@ -10,7 +10,7 @@ void Differentation();
 void Integration(double L, double P, double E, double I);
 double Delta(double L, double P, double E, double I);
 
-void RootFinding();
+void RootFinding(double L, double P, double E, double I);
 double y(double x, double P, double L, double d, double E, double I);
 double y_prime(double x, double P, double L, double d, double E, double I);
 double y_double_prime(double x, double P, double L, double d, double E, double I);
@@ -35,25 +35,29 @@ int main() {
 
 void UserInput() {
     printf("USER INPUT:\n");
-    double L, P, E, I;
+    double L, P, E_GPa, I_mm4;
     do {
         printf("Enter the column height, L (in m): ");
         scanf("%lf", &L);
         printf("Enter the concentrated load, P (in N): ");
         scanf("%lf", &P);
         printf("Enter the modulus of elasticity, E (in GPa): ");
-        scanf("%lf", &E);
+        scanf("%lf", &E_GPa);
         printf("Enter the moment of inertia, I (in mm^4): ");
-        scanf("%lf", &I);
+        scanf("%lf", &I_mm4);
 
-        if (L > 0 && P > 0 && E > 0 && I > 0) {
+        if (L > 0 && P > 0 && E_GPa > 0 && I_mm4 > 0) {
             break;
         }
         printf("\nAll values must be positive. Enter again.\n");
     } while(1);
 
+    double E = E_GPa * 1e9;
+    double I = I_mm4 * 1e-12;
+
     SystemOfODEs(L, P, E, I);
     Integration(L, P, E, I);
+    RootFinding(L, P, E, I);
 }
 
 //= ============================================================================
@@ -79,7 +83,7 @@ void SystemOfODEs(double L, double P, double E, double I) {
 
     double h = 0;
     do {
-        printf("Enter the step size, h: ");
+        printf("Enter the step size, h (m): ");
         scanf("%lf", &h);
 
         if (h > 0) {
@@ -96,7 +100,6 @@ void SystemOfODEs(double L, double P, double E, double I) {
     double theta = 0;
     double M = P*L;
     double V = -P;
-    double EI = E*I*1e-3;
 
     int N = round((double) L/h);
     int n = 0;
@@ -106,7 +109,7 @@ void SystemOfODEs(double L, double P, double E, double I) {
             fprintf(fPtr, "%d,%.4e,%.4e,%.4e,%.4e,%.4e\n", n, x, y, theta, M, V);
 
             y = y + h*theta;
-            theta = theta + h*M/EI;
+            theta = theta + h*M/(E*I);
             M = M + h*V;
         }
         fprintf(fPtr, "%d,%.4e,%.4e,%.4e,%.4e,%.4e\n", n, x, y, theta, M, V);
@@ -116,19 +119,19 @@ void SystemOfODEs(double L, double P, double E, double I) {
             fprintf(fPtr, "%d,%.4e,%.4e,%.4e,%.4e,%.4e\n", n, x, y, theta, M, V);
 
             double f1 = h * theta;
-            double g1 = h * M/EI;
+            double g1 = h * M/(E*I);
             double h1 = h * V;
 
             double f2 = h * (theta + 0.5*g1);
-            double g2 = h * (M + 0.5*h1)/EI;
+            double g2 = h * (M + 0.5*h1)/(E*I);
             double h2 = h * V;
 
             double f3 = h * (theta + 0.5*g2);
-            double g3 = h * (M + 0.5*h2)/EI;
+            double g3 = h * (M + 0.5*h2)/(E*I);
             double h3 = h * V;
 
             double f4 = h * (theta + g3);
-            double g4 = h * (M + h3)/EI;
+            double g4 = h * (M + h3)/(E*I);
             double h4 = h * V;
 
             y = y + (f1 + 2*f2 + 2*f3 + f4)/6;
@@ -234,30 +237,27 @@ void Integration(double L, double P, double E, double I) {
 //== ===========================================================================
 
 double Delta(double L, double P, double E, double I) {
-    double EI = E*I*1e-3;
-    return P*L*L*L / (3*EI);
+    return P*L*L*L / (3*E*I);
 }
 
 //= ============================================================================
 //= Root Finding
 //= ============================================================================
 
-void RootFinding() {
-    double P, L, d, E_GPa, I_mm4;
+void RootFinding(double L, double P, double E, double I) {
+    double d = 0;
+    do {
+        printf("\nEnter the pin-support distance, d (m): ");
+        scanf("%lf", &d);
 
-    printf("Enter the load P (in Newtons): ");
-    scanf("%lf", &P);
-    printf("Enter the length L (in meters): ");
-    scanf("%lf", &L);
+        if (d > 0) {
+            break;
+        }
+        printf("\nh must be positive. Enter again.\n");
+    } while(1);
+
     printf("Enter the distance d (in meters): ");
     scanf("%lf", &d);
-    printf("Enter the modulus of elasticity E (in GPa): ");
-    scanf("%lf", &E_GPa);
-    printf("Enter the moment of inertia I (in mm^4): ");
-    scanf("%lf", &I_mm4);
-
-    double E = E_GPa * 1e9;
-    double I = I_mm4 * 1e-12;
 
     double delta_free_end = (P * (L - d)) / (E * I) * (-pow(L, 2) / 4.0 + pow(L, 3) / (4.0 * d) - (pow(L - d, 2) * (3 * L - d) / (12.0 * d)));
     printf("\nMaximum deflection at the free end (in meters): %.6f\n", delta_free_end);
