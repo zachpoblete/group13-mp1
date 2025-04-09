@@ -225,19 +225,14 @@ void Integration(double L, double P, double E, double I) {
             }
         }
 
-        double endNodesFactor = (double) h / 3;
-        double evenNodesFactor = 2 * (double) h / 3;
-        double oddNodesFactor = 4 * (double) h / 3;
-
-        double endNodesTerm = endNodesFactor * endNodesSum;
-        double evenNodesTerm = evenNodesFactor * evenNodesSum;
-        double oddNodesTerm = oddNodesFactor * oddNodesSum;
-
+        double endNodesTerm = h/3 * endNodesSum;
+        double evenNodesTerm = 2*h/3 * evenNodesSum;
+        double oddNodesTerm = 4*h/3 * oddNodesSum;
         area = endNodesTerm + evenNodesTerm + oddNodesTerm;
     }
 
     double exactArea = 0.5 * maxP * Delta(L, maxP, E, I);
-    printf("\nCalculated Area: %lf\n", area);
+    printf("\nArea by Composite Rule: %lf\n", area);
     printf("Exact Area: %lf\n", exactArea);
 }
 
