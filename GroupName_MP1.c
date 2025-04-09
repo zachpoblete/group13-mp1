@@ -279,33 +279,53 @@ void RootFinding(double L, double P, double E, double I) {
         printf("\nWrong Input. Enter again.\n");
     } while(1);
 
-    double delta_free_end = (P * (L - d)) / (E * I) * (-pow(L, 2) / 4.0 + pow(L, 3) / (4.0 * d) - (pow(L - d, 2) * (3 * L - d) / (12.0 * d)));
-    printf("\nMaximum deflection at the free end (in meters): %.6f\n", delta_free_end);
+    double delta_at_free_end = fabs((P * (L - d)) / (E * I) * (-pow(L, 2) / 4.0 + pow(L, 3) / (4.0 * d) - (pow(L - d, 2) * (3 * L - d) / (12.0 * d))));
+    // printf("\nMaximum deflection at the free end (in meters): %.6f\n", delta_free_end);
+    double delta_max_within_d = 0;
 
-    double x_max;
     if (response == 1) {
-        printf("\nRunning Newton-Raphson for three initial guesses:\n");
+        // printf("\nRunning Newton-Raphson for three initial guesses:\n");
 
-        x_max = newton_raphson(P, L, d, E, I, 0.0);
-        printf("Maximum deflection at x = %.6f: %.6f m   (did not converge)\n", x_max, y(x_max, P, L, d, E, I));
+        double delta = 0;
+        double delta_new = 0;
 
-        x_max = newton_raphson(P, L, d, E, I, d / 2);
-        printf("Maximum deflection at x = %.6f: %.6f m\n", x_max, y(x_max, P, L, d, E, I));
+        double guesses[3] = {0, d/2, d};
+        for (int i = 0; i < 3; i++) {
+            double x = newton_raphson(P, L, d, E, I, guesses[i]);
+            delta_new = fabs(y(x, P, L, d, E, I));
+            if (delta_new > delta) {
+                delta_max_within_d = delta_new;
+            }
+        }
+        // printf("Deflection at x = %.6f is %.6f m\n", x, delta);
 
-        x_max = newton_raphson(P, L, d, E, I, d);
-        printf("Maximum deflection at x = %.6f: %.6f m\n", x_max, y(x_max, P, L, d, E, I));
+        // x = newton_raphson(P, L, d, E, I, d / 2);
+        // printf("Maximum deflection at x = %.6f: %.6f m\n", x, y(x, P, L, d, E, I));
+
+        // x = newton_raphson(P, L, d, E, I, d);
+        // printf("Maximum deflection at x = %.6f: %.6f m\n", x, y(x, P, L, d, E, I));
     } else {
         double a = d / 100.0;
         double b = d;
 
-        x_max = regula_falsi(P, L, d, E, I, a, b);
+        double x = regula_falsi(P, L, d, E, I, a, b);
+        delta_max_within_d = fabs(y(x, P, L, d, E, I));
 
-        if (x_max != -1) {
-            printf("\nLocation of maximum deflection within [0, d] (in meters): %.6f\n", x_max);
-            printf("Maximum deflection: %.6f\n", y(x_max, P, L, d, E, I));
-        } else {
-            printf("\nCalculation failed.\n");
-        }
+        // if (x != -1) {
+        //     printf("\nLocation of maximum deflection within [0, d] (in meters): %.6f\n", x);
+        //     printf("Maximum deflection: %.6f\n", y(x, P, L, d, E, I));
+        // } else {
+        //     printf("\nCalculation failed.\n");
+        // }
+    }
+
+    printf("\nMax deflection within d: %.6lf m\n", delta_max_within_d);
+    printf("Max deflection at free end: %.6lf m\n", delta_at_free_end);
+
+    if (delta_max_within_d > delta_at_free_end) {
+        printf("Max deflection occurs within d\n");
+    } else {
+        printf("Max deflection occurs at free end\n");
     }
 }
 
@@ -329,27 +349,29 @@ double newton_raphson(double P, double L, double d, double E, double I, double x
     double x = x0;
     double fx, fprime_x;
     int iter = 0;
+    double x_old = 0;
 
-    printf("\nNewton-Raphson Method with initial guess x0 = %.6f:\n", x0);
-    printf("Iteration\t x\t\t y'(x)\t\t y''(x)\n");
-    printf("----------------------------------------------------------------\n");
+    // printf("\nNewton-Raphson Method with initial guess x0 = %.6f:\n", x0);
+    // printf("Iteration\t x\t\t y'(x)\t\t y''(x)\n");
+    // printf("----------------------------------------------------------------\n");
 
     do {
         fx = y_prime(x, P, L, d, E, I);
         fprime_x = y_double_prime(x, P, L, d, E, I);
 
-        printf("%d\t\t %.6f\t %.6e\t %.6e\n", iter, x, fx, fprime_x);
+        // printf("%d\t\t %.6f\t %.6e\t %.6e\n", iter, x, fx, fprime_x);
 
         if (fabs(fprime_x) < tolerance) {
-            printf("Derivative near zero, cannot proceed with the current method. Please try again!\n");
+            // printf("Derivative near zero, cannot proceed with the current method. Please try again!\n");
             return -1;
         }
+        x_old = x;
         x -= fx / fprime_x;
         iter++;
-    } while (fabs(fx) > tolerance && iter < 100);
+    } while (fabs(x - x_old) > tolerance && iter < 100);
 
-    printf("----------------------------------------------------------------\n");
-    printf("Converged to x = %.6f after %d iterations.\n", x, iter);
+    // printf("----------------------------------------------------------------\n");
+    // printf("Converged to x = %.6f after %d iterations.\n", x, iter);
     return x;
 }
 
@@ -358,23 +380,23 @@ double regula_falsi(double P, double L, double d, double E, double I, double a, 
     double fb = y_prime(b, P, L, d, E, I);
 
     if (fa * fb > 0) {
-        printf("Function does not change sign in the interval [%.6f, %.6f]. Please try again!\n", a, b);
-        printf("y'(a) = %.6e, y'(b) = %.6e\n", fa, fb);
+        // printf("Function does not change sign in the interval [%.6f, %.6f]. Please try again!\n", a, b);
+        // printf("y'(a) = %.6e, y'(b) = %.6e\n", fa, fb);
         return -1;
     }
 
     double c;
     int iter = 0;
 
-    printf("\nRegula Falsi Method in interval [%.6f, %.6f]:\n", a, b);
-    printf("\nIteration\t a\t\t b\t\t c\t\t y'(c)\n");
-    printf("-------------------------------------------------------------------------------\n");
+    // printf("\nRegula Falsi Method in interval [%.6f, %.6f]:\n", a, b);
+    // printf("\nIteration\t a\t\t b\t\t c\t\t y'(c)\n");
+    // printf("-------------------------------------------------------------------------------\n");
 
     do {
         c = (a * fb - b * fa)/ (fb - fa);
         double fc = y_prime(c, P, L, d, E, I);
 
-        printf("%d\t\t %.6f\t %.6f\t %.6f\t %.6e\n", iter, a, b, c, fc);
+        // printf("%d\t\t %.6f\t %.6f\t %.6f\t %.6e\n", iter, a, b, c, fc);
 
         if (fabs(fc) < tolerance) break;
         if (fa * fc < 0) {
@@ -387,7 +409,7 @@ double regula_falsi(double P, double L, double d, double E, double I, double a, 
         iter++;
     } while (fabs(b - a) > tolerance && iter < 100);
 
-    printf("-------------------------------------------------------------------------------\n");
-    printf("Converged to x = %.6f after %d iterations.\n", c, iter);
+    // printf("-------------------------------------------------------------------------------\n");
+    // printf("Converged to x = %.6f after %d iterations.\n", c, iter);
     return c;
 }
