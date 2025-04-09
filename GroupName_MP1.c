@@ -14,29 +14,51 @@ int main() {
 }
 
 void UserInput() {
-    // ! TO DO: Input validation
     double L, P, E, I;
-    printf("Input the column height L (in m): ");
-    scanf("%lf", &L);
-    printf("Input the concentrated load P (in N): ");
-    scanf("%lf", &P);
-    printf("Input the modulus of elasticity E (in GPa): ");
-    scanf("%lf", &E);
-    printf("Input the moment of inertia I (in mm⁴): ");
-    scanf("%lf", &I);
+    do {
+        printf("Input the column height L (in m): ");
+        scanf("%lf", &L);
+        printf("Input the concentrated load P (in N): ");
+        scanf("%lf", &P);
+        printf("Input the modulus of elasticity E (in GPa): ");
+        scanf("%lf", &E);
+        printf("Input the moment of inertia I (in mm^4): ");
+        scanf("%lf", &I);
+
+        if (L > 0 && P > 0 && E > 0 && I > 0) {
+            break;
+        }
+        printf("\nAll values must be positive. Enter again.\n");
+    } while(1);
+
     SystemOfODEs(L, P, E, I);
 }
 
 void SystemOfODEs(double L, double P, double E, double I) {
-    double h, choice;
+    double h, response;
 
-    printf("Input the step size h: ");
-    scanf("%lf", &h);
+    do {
+        printf("Input the step size h: ");
+        scanf("%lf", &h);
 
-    do{
-        printf("\nChoose a method:\n1. Euler's \n2. 4th Order Runge-Kutta \n\nEnter your choice: ");
-        scanf("%lf", &choice);
-    } while(choice != 1 && choice !=2);
+        if (h > 0) {
+            break;
+        }
+        printf("\nAll values must be positive. Enter again.\n");
+    } while(1);
+
+    printf("\nChoose a method:\n");
+    printf("(1) Euler's\n");
+    printf("(2) 4th Order Runge-Kutta\n");
+    do {
+        printf("Respond 1 or 2: ");
+        scanf("%lf", &response);
+
+        if (response == 1 || response == 2) {
+            break;
+        }
+        printf("\nWrong Input. Enter again.\n");
+    } while(1);
 
     FILE *fPtr = fopen("data.csv", "w");
     fprintf(fPtr, "n,x (m),y (m),θ (rad),M (Nm),V (N)\n");
@@ -50,7 +72,7 @@ void SystemOfODEs(double L, double P, double E, double I) {
 
     int N = round((double) L/h);
     int n = 0;
-    if (choice == 1){
+    if (response == 1){
         for (n = 0; n < N; n++){
             x = n * h;
             fprintf(fPtr, "%d,%.4e,%.4e,%.4e,%.4e,%.4e\n", n, x, y, theta, M, V);
@@ -61,7 +83,7 @@ void SystemOfODEs(double L, double P, double E, double I) {
         }
         fprintf(fPtr, "%d,%.4e,%.4e,%.4e,%.4e,%.4e\n", n, x, y, theta, M, V);
     }
-    else if (choice == 2){
+    else if (response == 2){
         for (n = 0; n < N; n++){
             x = n * h;
             fprintf(fPtr, "%d,%.4e,%.4e,%.4e,%.4e,%.4e\n", n, x, y, theta, M, V);
