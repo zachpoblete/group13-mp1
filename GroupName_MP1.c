@@ -5,7 +5,7 @@
 
 void UserInput();
 void SystemOfODEs(double L, double P, double E, double I);
-void Differentation(double L, double P, double E, double I);
+void Differentation();
 
 void Integration(double L, double P, double E, double I);
 double Delta(double L, double P, double E, double I);
@@ -150,7 +150,7 @@ void SystemOfODEs(double L, double P, double E, double I) {
 //= Differentiation
 //= ============================================================================
 
-void Differentation(double L, double P, double E, double I) {
+void Differentation() {
 
 }
 
