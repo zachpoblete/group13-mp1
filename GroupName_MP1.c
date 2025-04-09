@@ -48,8 +48,22 @@ void UserInput() {
 
 void SystemOfODEs(double L, double P, double E, double I) {
     printf("\nSYSTEM OF ODES:\n");
-    double h, response;
+    printf("Choose:\n");
+    printf("(1) Euler Method\n");
+    printf("(2) RK4\n\n");
 
+    int response = 0;
+    do {
+        printf("Respond 1 or 2: ");
+        scanf("%d", &response);
+
+        if (response == 1 || response == 2) {
+            break;
+        }
+        printf("\nWrong Input. Enter again.\n");
+    } while(1);
+
+    double h = 0;
     do {
         printf("Input the step size h: ");
         scanf("%lf", &h);
@@ -58,19 +72,6 @@ void SystemOfODEs(double L, double P, double E, double I) {
             break;
         }
         printf("\nh must be positive. Enter again.\n");
-    } while(1);
-
-    printf("\nChoose:\n");
-    printf("(1) Euler Method\n");
-    printf("(2) RK4\n\n");
-    do {
-        printf("Respond 1 or 2: ");
-        scanf("%lf", &response);
-
-        if (response == 1 || response == 2) {
-            break;
-        }
-        printf("\nWrong Input. Enter again.\n");
     } while(1);
 
     FILE *fPtr = fopen("data.csv", "w");
@@ -128,7 +129,7 @@ void SystemOfODEs(double L, double P, double E, double I) {
     printf("\ntheta = %lf", theta);
     printf("\nM = %lf", M);
     printf("\nV = %lf", V);
-    printf("\nThe results are successfully saved to data.csv!\n");
+    printf("\nOutput written to data.csv.\n");
 }
 
 void Differentation(double L, double P, double E, double I) {
