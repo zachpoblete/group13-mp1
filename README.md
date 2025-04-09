@@ -12,7 +12,7 @@
 
 ## 📌 Reminders
 
-- `.exe` files you create will not be uploaded to the remote repository (this page) because of the [.gitignore file](.gitignore); you will have to rebuild any `.exe` file when changes to its `.c` file have been made.
+- `.exe` files you create along with `data.csv` will not be uploaded to the remote repository (this page) because of the [.gitignore file](.gitignore); you will have to rebuild any `.exe` and `data.csv` files when changes to their corresponding `.c` file have been made.
 - It's a good practice to fetch any changes made to the remote repository before pushing your own changes. Unless a merge conflict appears, you can then pull those changes and push your own changes.
 
 ## 📖 Terminology
