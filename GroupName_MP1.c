@@ -38,7 +38,7 @@ void SystemOfODEs(double L, double P, double E, double I) {
     printf("Input the step size h: ");
     scanf("%lf", &h);
 
-   do{
+    do{
         printf("\nChoose a method:\n1. Euler's \n2. 4th Order Runge-Kutta \n\nEnter your choice: ");
         scanf("%lf", &choice);
     } while(choice != 1 && choice !=2);
@@ -49,41 +49,39 @@ void SystemOfODEs(double L, double P, double E, double I) {
     z1 = 0, z2 = 0, z3 = P*L, z4 = -P, E_I = E*I*1e-3;
 
     if(choice == 1){
-      for (i=0; i <= L; i+=h){
-        fprintf(fPtr, "%.3e,%.3e,%.3e,%.3e,%.3e\n", i, z1, z2, z3, z4);
+        for (i=0; i <= L; i+=h){
+            fprintf(fPtr, "%.3e,%.3e,%.3e,%.3e,%.3e\n", i, z1, z2, z3, z4);
 
-          z1 = z1 + h*z2;
-          z2 = z2 + h*z3/E_I;
-          z3 = z3 + h*z4;
+            z1 = z1 + h*z2;
+            z2 = z2 + h*z3/E_I;
+            z3 = z3 + h*z4;
         }
     }
 
     else if(choice == 2){
         for (i=0; i <= L; i+=h){
-        fprintf(fPtr, "%.3e,%.3e,%.3e,%.3e,%.3e\n", i, z1, z2, z3, z4);
+            fprintf(fPtr, "%.3e,%.3e,%.3e,%.3e,%.3e\n", i, z1, z2, z3, z4);
 
-         f1 = h*z2;
-         g1 = h*z3/(E_I);
-         h1 = h*z4;
+            f1 = h*z2;
+            g1 = h*z3/(E_I);
+            h1 = h*z4;
 
-         f2 = h*(z2+0.5*g1);
-         g2 = h*(z3+0.5*h1)/E_I;
-         h2 = h*(z4);
+            f2 = h*(z2+0.5*g1);
+            g2 = h*(z3+0.5*h1)/E_I;
+            h2 = h*(z4);
 
-         f3 = h*(z2+0.5*g2);
-         g3 = h*(z3+0.5*h2)/E_I;
-         h3 = h*(z4);
+            f3 = h*(z2+0.5*g2);
+            g3 = h*(z3+0.5*h2)/E_I;
+            h3 = h*(z4);
 
-         f4 = h*(z2+g3);
-         g4 = h*(z3+h3)/E_I;
-         h4 = h*(z4);
+            f4 = h*(z2+g3);
+            g4 = h*(z3+h3)/E_I;
+            h4 = h*(z4);
 
-         z1 = z1 + (f1+2*f2+2*f3+f4)/6;
-         z2 = z2 + (g1+2*g2+2*g3+g4)/6;
-         z3 = z3 + (h1+2*h2+2*h3+h4)/6;
-
-    }
-
+            z1 = z1 + (f1+2*f2+2*f3+f4)/6;
+            z2 = z2 + (g1+2*g2+2*g3+g4)/6;
+            z3 = z3 + (h1+2*h2+2*h3+h4)/6;
+        }
     }
 
 
