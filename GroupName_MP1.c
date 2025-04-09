@@ -163,11 +163,12 @@ void Differentation() {
 
 void Integration(double L, double P, double E, double I) {
     printf("\nNUMERICAL INTEGRATION:\n");
+    printf("Choose:\n");
+    printf("(1)  Trapezoidal Rule\n");
+    printf("(2)  Simpson's Rule\n\n");
+
     int response = 0;
     do {
-        printf("Choose:\n");
-        printf("(1)  Trapezoidal Rule\n");
-        printf("(2)  Simpson's Rule\n\n");
         printf("Respond 1 or 2: ");
         scanf("%d", &response);
 
