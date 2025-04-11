@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 
 #define tolerance 1e-10
@@ -25,7 +26,8 @@ int main() {
     // double I_mm4 = 50000000;
     // double E = E_GPa * 1e9;
     // double I = I_mm4 * 1e-12;
-    // RootFinding(L, P, E, I);
+    // double h = 0.01;
+    // Differentation("data.csv", L, h);
 
     UserInput();
     return 0;
@@ -153,14 +155,83 @@ void SystemOfODEs(double L, double P, double E, double I) {
     printf("\nM = %lf", M);
     printf("\nV = %lf", V);
     printf("\nOutput written to data.csv.\n");
+
+    Differentation("data.csv", L, h);
 }
 
 //= ============================================================================
 //= Differentiation
 //= ============================================================================
 
-void Differentation() {
+void Differentation(const char *filename, double L, double h) {
+    printf("\nDIFFERENTIATION:\n");
 
+    int method;
+    int n = (int)(L/h)+1;
+    double x[n], y[n], slope_ode[n], slope_diff[n];
+    int counter = 0;
+
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        printf("Cannot open %s\n", filename);
+        return;
+    }
+
+    char buffer[256];
+    fgets(buffer, sizeof(buffer), file);
+
+    while (fgets(buffer, sizeof(buffer), file)) {
+        sscanf(buffer, "%*d,%lf,%lf,%lf", &x[counter], &y[counter], &slope_ode[counter]);
+        counter++;
+    }
+
+    do {
+        printf("What is your preferred method for the calculation of total number of vehicles? \n");
+        printf("Kindly input your answer based on the following selections: \n");
+        printf("1 - 2nd Order Central Difference Approximation\n");
+        printf("2 - 4th Order Central Difference Approximation\n\n");
+        printf("Preferred Method: ");
+        scanf("%d", &method);
+
+
+        ///2ND ORDER CENTRAL DIFFERENCE APPROXIMATION
+        if (method == 1) {
+                printf("\n\nYou have chosen 2nd Order Central Difference Approximation\n");
+
+                for (int i = 2; i < n-2; i++) {
+                    slope_diff[i] = (y[i + 1] - y[i - 1]) / (2 * h);
+                }
+        }
+
+        /// 4TH ORDER CENTRAL DIFFERENCE APPROXIMATION
+        else if (method == 2) {
+                printf("\n\nYou have chosen 4th Order Central Difference Approximation\n");
+
+                for (int i = 2; i < n-2; i++) {
+                    slope_diff[i] = (-y[i + 2] + 8 * y[i + 1] - 8 * y[i - 1] + y[i - 2]) / (12 * h);
+                }
+        }
+
+        else {
+            system("cls");
+            printf("Invalid method. \n\n");
+        }
+
+    } while (method != 1 && method !=  2);
+
+    ///ONE-SIDED FINITE DIFFERENCE
+    slope_diff[0] = (-(3 * y[0]) + 4 * y[1] - y[2]) / (2 * h);
+    slope_diff[1] = (-(3 * y[1]) + 4 * y[2] - y[3]) / (2 * h);
+    slope_diff[n - 1] = (-(3 * y[n - 1]) + 4 * y[n - 2] - y[n - 3]) / (2 * h);
+    slope_diff[n - 2] = (-(3 * y[n - 2]) + 4 * y[n - 3] - y[n - 4]) / (2 * h);
+
+    printf("x \t\tSlope (ODE) \tSlope (Diff) \tAbsolute Error \n");
+    for (int i = 0; i < n; i++) {
+        double error = fabs(slope_diff[i] - slope_ode[i]);
+        printf("%lf \t%lf \t%lf \t%lf\n", x[i], slope_ode[i], slope_diff[i], error);
+    }
+
+    fclose(file);
 }
 
 //= ============================================================================
