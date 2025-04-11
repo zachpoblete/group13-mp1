@@ -13,7 +13,7 @@
 
 ## 📌 Important Reminders
 
-- Make it a habit to frequently fetch & pull and always fetch & pull at the start of a coding session. Doing this will avoid many merge conflicts.
+- Make it a habit to frequently fetch & pull and always fetch & pull at the start of a coding session. Doing this will avoid many merge conflicts and make any future merge conflicts much more manageable.
 - `.exe` files you create along with `data.csv` will not be uploaded to the remote repository (this page) because of the [.gitignore file](.gitignore); you will have to rebuild any `.exe` and `data.csv` files when changes to their corresponding `.c` file have been made.
 
 ## 📖 Terminology
