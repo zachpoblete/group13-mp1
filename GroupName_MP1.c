@@ -253,7 +253,7 @@ void Integration(double L, double P, double E, double I) {
             break;
         }
         printf("\nWrong Input. Enter again.\n");
-    } while(1);
+    } while (1);
 
     int n = 0;
     do {
@@ -266,10 +266,14 @@ void Integration(double L, double P, double E, double I) {
         printf("\nn must be positive and even. Enter again.\n");
     } while (1);
 
+    FILE *fPtr = fopen("integration_data.csv", "w");
+    fprintf(fPtr, "Δ,P\n");
+
     double maxP = P;
     double h = maxP/n;
     double area = 0;
 
+    fprintf(fPtr, "%lf,%lf\n", Delta(L, 0, E, I), 0);
     if (response == 1) {
         // Composite Trapezoidal Rule:
 
@@ -278,6 +282,7 @@ void Integration(double L, double P, double E, double I) {
         for (int k = 1; k < n; k++) {
             P = h*k;
             innerNodesSum += Delta(L, P, E, I);
+            fprintf(fPtr, "%lf,%lf\n", Delta(L, P, E, I), P);
         }
 
         double endNodesTerm = h/2 * endNodesSum;
@@ -296,6 +301,7 @@ void Integration(double L, double P, double E, double I) {
             } else {
                 oddNodesSum += Delta(L, P, E, I);
             }
+            fprintf(fPtr, "%lf,%lf\n", Delta(L, P, E, I), P);
         }
 
         double endNodesTerm = h/3 * endNodesSum;
@@ -303,10 +309,13 @@ void Integration(double L, double P, double E, double I) {
         double oddNodesTerm = 4*h/3 * oddNodesSum;
         area = endNodesTerm + evenNodesTerm + oddNodesTerm;
     }
+    fprintf(fPtr, "%lf,%lf\n", Delta(L, maxP, E, I), maxP);
+    fclose(fPtr);
 
     double exactArea = 0.5 * maxP * Delta(L, maxP, E, I);
     printf("\nArea by Composite Rule: %lf\n", area);
     printf("Exact Area: %lf\n", exactArea);
+    printf("Output written to integration_data.csv\n");
 }
 
 //== ===========================================================================
