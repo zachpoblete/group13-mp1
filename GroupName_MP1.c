@@ -115,6 +115,7 @@ void SystemOfODEs(double L, double P, double E, double I) {
             theta = theta + h*M/(E*I);
             M = M + h*V;
         }
+        x = n * h;
         fprintf(fPtr, "%d,%.4e,%.4e,%.4e,%.4e,%.4e\n", n, x, y, theta, M, V);
     } else {
         // RK4:
@@ -142,6 +143,7 @@ void SystemOfODEs(double L, double P, double E, double I) {
             theta = theta + (g1 + 2*g2 + 2*g3 + g4)/6;
             M = M + (h1 + 2*h2 + 2*h3 + h4)/6;
         }
+        x = n * h;
         fprintf(fPtr, "%d,%.4e,%.4e,%.4e,%.4e,%.4e\n", n, x, y, theta, M, V);
     }
     fclose(fPtr);
